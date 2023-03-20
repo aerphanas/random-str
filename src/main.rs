@@ -1,12 +1,25 @@
 use rand::Rng;
-use std::{char::from_u32, io};
+use std::{char::from_u32, io::{self, Write}};
 
 fn main() {
 
-    println!("length : ");
-    let mut input: String = String::new();
-    io::stdin().read_line(&mut input).unwrap();
     let mut nums: u32 = 0;
+    let mut input: String = String::new();
+
+    const LOW_ASCII: u8 = 33;
+    const UPP_ASCII: u8 = 126;
+
+
+    print!("length : ");
+
+    io::stdout()
+        .flush()
+        .unwrap();
+
+    io::stdin()
+        .read_line(&mut input)
+        .unwrap();
+
 
     if let Ok(num) = input.trim().parse::<u32>() {
         nums = num - 1
@@ -14,8 +27,11 @@ fn main() {
         println!("error is input number ?")
     }
 
-    for _ in 0..=nums {
-        print!("{}", from_u32(rand::thread_rng().gen_range(33..=126)).unwrap())
-    }
+    (0..=nums).into_iter()
+        .for_each(|_| {
+            print!("{}", from_u32(rand::thread_rng().gen_range(LOW_ASCII..=UPP_ASCII).into()).unwrap())
+        });
+
+    println!("");
 
 }
